@@ -1,0 +1,22 @@
+RewriteEngine On
+
+# Remove .php extension
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+ 
+
+# Rewrite specific pages
+RewriteRule login index.php [L]
+RewriteRule home client.php [L]
+RewriteRule returnsamt clientreturns.php [L]
+RewriteRule topup invest.php [L]
+ 
+RewriteRule agreement agree.php [L]
+RewriteRule resetpassword resetpassword.php [L]
+
+# Allow any parameters for returns.php
+RewriteCond %{REQUEST_URI} ^/ndu/ndu/returns\.php$
+ 
+RewriteCond %{REQUEST_URI} ^/ndu/ndu/invested\.php$
+RewriteRule ^ - [L]
