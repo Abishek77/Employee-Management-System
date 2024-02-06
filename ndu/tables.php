@@ -217,45 +217,34 @@ if (!isAdmin()) {
                                              
                                         </tr>
                                     </thead>
-                                     
-                                    <tbody>
-                                    <?php
-                                    #admin ristrictions
-                                    $admins = $_SESSION["email"];
-                                   
-                                    ?> 
-                                     <?php while ($client = mysqli_fetch_assoc($result1)){  ;?>
+                                                                         <tbody>                             
                                         <tr>
                                         <form action ="tablesupdate.php" method="POST" enctype="multipart/form-data">
-                                            <td style="display:none"><input name="id" type="text" class="form-control search" value="<?php echo $client['id'] ?>" ></td>
+                                            <td style="display:none">
+                                            <input id="id" type="text" class="form-control search"  ></td>
 
-                                            <td><input name="name" required type="text" class="form-control search" value="<?php echo $client['name'] ?>" ></td>
-                                            <td><input name ="lname" required type="text" class="form-control search" value="<?php echo $client['lname'] ?>"</td>
-                                            <td><input name="email" required type="text" class="form-control search" value="<?php echo $client['email'] ?>" ><p class="text-dark"><?php echo $client['email'] ?></p></td>
-                                            <td><input name="phone" required type="text" class="form-control search" value="<?php echo $client['phone'] ?>" ></td>
-                                            <td><input type="text" required name="tdate" class="form-control search" value="<?php echo $client['tdate'] ?>" ><p class="text-dark"><?php echo $client['tdate'] ?></p></td>
+                                            <td><input id="name" required type="text" class="form-control search"  ></td>
+                                            <td><input id ="lname" required type="text" class="form-control search" ></td>
+                                            <td><input id="email" required type="text" class="form-control search"  ><p class="text-dark"></p></td>
+                                            <td><input id="phone" required type="text" class="form-control search" ></td>
+                                            <td><input type="text" required id="tdate" class="form-control search"  ><p class="text-dark"></p></td>
                                             
-                                            <td><input type="text" required name="tmode" class="form-control search" value="<?php echo $client['tmode'] ?>" ></td>
-                                            <td><input type="text" required name="tid" class="form-control search" value="<?php echo $client['tid'] ?>" ></td>  
-                                            <td><input type="text"   name="bank" class="form-control search" value="<?php echo $client['bankname'] ?>" ></td>  
-                                            <td><input type="text"  name="account" class="form-control search" value="<?php echo $client['account'] ?>" ></td>  
-                                            <td><input type="text"  name="ifsc" class="form-control search" value="<?php echo $client['ifsc'] ?>" ></td>  
-                                            <td><input type="file"  name="file2" class=" " value="<?php echo $client['content2'] ?>" >existing file:<?php echo $client['file2'] ?> </td>  
+                                            <td><input type="text" required id="tmode" class="form-control search"  ></td>
+                                            <td><input type="text" required id="tid" class="form-control search"  ></td>  
+                                            <td><input type="text"   id="bank" class="form-control search"  ></td>  
+                                            <td><input type="text"  id="account" class="form-control search" ></td>  
+                                            <td><input type="text"  id="ifsc" class="form-control search"  ></td>  
+                                            <td><input type="file"  id="file2"  ></td>  
                                                
-                                            <td> <button name="submit" type="submit" class="btn-secondary btn" <?php if ($admins != "superadmin" ){ echo 'disabled';} ?>> update </button> </td>
+                                            <td> <button id="update" type="button" onclick="updateRecords()" class="btn-secondary btn"> update </button> </td>
                                             <td>
-                                            <a href="delete.php?id=<?php echo urlencode($client['id']); ?>   " class="btn-secondary btn">Delete</a>
-
+                                            <button type="button" onclick="deletes()" class="btn-secondary btn">Delete</button>
                                             </td>
-                                            <td> <button type="button" onclick="location.href='approve.php?id=<?php echo urlencode($client['id']); ?>&email=<?php echo urlencode($client['email']); ?>'" <?php if ($client['aproved'] != '0') echo 'disabled';  ?> class="btn-secondary btn">Approve</button>
+                                            <td> <button type="button" onclick="access()" class="btn-secondary btn">Approve</button></td>
 
- </td>
-                                             
-                                            </form>	
+                                                                                         </form>	
                                         </tr>
-                                         <?php }
-                                    
-                                         ?>
+                                        
                                     </tbody>
                                 </table>
                                   
@@ -309,6 +298,65 @@ if (!isAdmin()) {
             </div>
         </div>
     </div>
+
+    <script>
+  function updateRecords(){
+      var name = $('#name').val();
+      var lname = $("#lname").val();
+      var email = $("#email").val();
+      var phone = $("#phone").val();
+      var tdate = $("#tdate").val();
+      var tmode = $("#tmode").val();
+      var tid = $("#tid").val();
+      var bank = $("#bank").val();
+      var account = $("#account").val();
+      var ifsc = $("#ifsc").val();
+      var id = 74;
+        
+       
+      $.ajax({
+            url:'tablesupdate.php',
+            type:'POST',
+            
+            data:{ name: name,lname:lname,email:email,phone:phone,tdate:tdate,tmode:tmode,tid:tid,bank:bank,account:account,
+            ifsc: ifsc, id:id
+
+            },
+            success:function(data, status){
+                 alert('done')
+            }
+      });
+
+  }
+
+  function deletes(){
+   var id=76;
+    $.ajax({
+        url:'delete.php',
+        type:'POST',
+        data:{id:id},
+        success:function(data, status) 
+        {
+            alert("deleted")
+        }
+    });
+    
+  }
+       function access() {
+    var id = 74;
+    $.ajax({
+        url: 'approve.php',
+        type: 'POST',
+        data: { id: id },
+        success: function (data, status) {
+            console.log("Approved");
+        }
+    });
+}
+
+        
+  
+        </script>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
